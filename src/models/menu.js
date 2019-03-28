@@ -2,6 +2,7 @@ import memoizeOne from 'memoize-one';
 import isEqual from 'lodash/isEqual';
 import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
+import { queryRoute } from '@/services/user';
 import { menu } from '../defaultSettings';
 
 const { check } = Authorized;
@@ -17,20 +18,16 @@ function formatter(data, parentAuthority, parentName) {
         return null;
       }
 
-      let locale = 'menu';
+      let locale = '';
       if (parentName && parentName !== '/') {
         locale = `${parentName}.${item.name}`;
       } else {
-        locale = `menu.${item.name}`;
+        locale = `${item.name}`;
       }
       // if enableMenuLocale use item.name,
       // close menu international
-      const name = menu.disableLocal
-        ? item.name
-        : formatMessage({ id: locale, defaultMessage: item.name });
       const result = {
         ...item,
-        name,
         locale,
         authority: item.authority || parentAuthority,
       };
@@ -96,6 +93,8 @@ const getBreadcrumbNameMap = menuData => {
   return routerMap;
 };
 
+
+
 const memoizeOneGetBreadcrumbNameMap = memoizeOne(getBreadcrumbNameMap, isEqual);
 
 export default {
@@ -108,7 +107,8 @@ export default {
   },
 
   effects: {
-    *getMenuData({ payload }, { put }) {
+    /*
+     *getMenuData({ payload }, { put }) {
       const { routes, authority, path } = payload;
       const originalMenuData = memoizeOneFormatter(routes, authority, path);
       const menuData = filterMenuData(originalMenuData);
@@ -116,6 +116,18 @@ export default {
       yield put({
         type: 'save',
         payload: { menuData, breadcrumbNameMap, routerData: routes },
+      });
+    },
+    */
+    *getMenuData({ payload }, { call, put }) {
+      const response = yield call(queryRoute, payload);
+      console.log("dva resp:",response)
+      const originalMenuData = memoizeOneFormatter(response.routes);
+      const menuData = filterMenuData(originalMenuData);
+      const breadcrumbNameMap = memoizeOneGetBreadcrumbNameMap(originalMenuData);
+      yield put({
+        type: 'save',
+        payload: { menuData, breadcrumbNameMap},
       });
     },
   },

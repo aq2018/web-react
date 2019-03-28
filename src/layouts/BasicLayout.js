@@ -47,7 +47,6 @@ class BasicLayout extends React.Component {
   componentDidMount() {
     const {
       dispatch,
-      route: { routes, path, authority },
     } = this.props;
     dispatch({
       type: 'user/fetchCurrent',
@@ -57,7 +56,6 @@ class BasicLayout extends React.Component {
     });
     dispatch({
       type: 'menu/getMenuData',
-      payload: { routes, path, authority },
     });
   }
 
@@ -165,8 +163,4 @@ export default connect(({ global, setting, menu: menuModel }) => ({
   menuData: menuModel.menuData,
   breadcrumbNameMap: menuModel.breadcrumbNameMap,
   ...setting,
-}))(props => (
-  <Media query="(max-width: 599px)">
-    {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
-  </Media>
-));
+}))(BasicLayout);

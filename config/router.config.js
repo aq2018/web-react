@@ -28,6 +28,28 @@ export default [
       // authority: ['admin', 'user']
       },
       {
+        path: '/manage',
+        name: '系统管理',
+        icon: 'dashboard',
+        routes: [
+          {
+            path: '/manage/user',
+            name: '用户管理',
+            component: './Dashboard/Analysis',
+          },
+          {
+            path: '/manage/role',
+            name: '角色管理',
+            component: './Dashboard/Monitor',
+          },
+          {
+            path: '/manage/part',
+            name: '机构管理',
+            component: './Dashboard/Workplace',
+          },
+        ],
+      },
+      {
         path: '/dashboard',
         name: 'dashboard',
         icon: 'dashboard',

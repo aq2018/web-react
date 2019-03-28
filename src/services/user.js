@@ -7,3 +7,11 @@ export async function query() {
 export async function queryCurrent() {
   return request('/api/currentUser');
 }
+
+/**
+ * 获取菜单
+ * @param {*} params
+ */
+export async function queryRoute() {
+  return request('/api/permit/my');
+}
