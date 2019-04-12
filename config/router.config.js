@@ -24,8 +24,10 @@ export default [
     Routes: ['src/pages/Authorized'],
     routes: [
       // dashboard
-      { path: '/', redirect: '/dashboard/analysis'
-      // authority: ['admin', 'user']
+      {
+        path: '/',
+        redirect: '/dashboard/analysis',
+        // authority: ['admin', 'user']
       },
       {
         path: '/manage',
@@ -46,6 +48,18 @@ export default [
             path: '/manage/part',
             name: '机构管理',
             component: './Dashboard/Workplace',
+          },
+        ],
+      },
+      {
+        path: '/demo',
+        name: 'demo',
+        icon: 'dashboard',
+        routes: [
+          {
+            path: '/demo/demo01',
+            name: '用户管理',
+            component: './Demo/demo01',
           },
         ],
       },

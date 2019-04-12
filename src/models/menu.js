@@ -93,8 +93,6 @@ const getBreadcrumbNameMap = menuData => {
   return routerMap;
 };
 
-
-
 const memoizeOneGetBreadcrumbNameMap = memoizeOne(getBreadcrumbNameMap, isEqual);
 
 export default {
@@ -121,13 +119,12 @@ export default {
     */
     *getMenuData({ payload }, { call, put }) {
       const response = yield call(queryRoute, payload);
-      console.log("dva resp:",response)
       const originalMenuData = memoizeOneFormatter(response.routes);
       const menuData = filterMenuData(originalMenuData);
       const breadcrumbNameMap = memoizeOneGetBreadcrumbNameMap(originalMenuData);
       yield put({
         type: 'save',
-        payload: { menuData, breadcrumbNameMap},
+        payload: { menuData, breadcrumbNameMap },
       });
     },
   },
